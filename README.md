@@ -15,14 +15,7 @@ Features:
 
 Preview URLs look like this: `https://[owner].github.io/[repo]/pr-preview/pr-[number]/`
 
-<p align="center">
-  <img src="https://github.com/step-security/pr-preview-action/blob/main/.github/sample-preview-link.png" alt="Sample comment left by the action" width="548">
-</p>
-<p align="center">
-  Pictured: https://github.com/step-security/pr-preview-action/pull/1
-</p>
-
-This Action does not currently support deploying previews for PRs from forks, but will do so in [the upcoming v2](https://github.com/step-security/pr-preview-action/pull/6).
+This Action does not currently support deploying previews for PRs from forks.
 
 # Setup
 
@@ -33,13 +26,6 @@ You just need to do two things to set up your repository to support previews, bo
 ### 1. Deploy Pages from branch
 
 Ensure that your repository is configured to have its GitHub Pages site deployed from a branch, by setting the source for the deployment under **Settings** > **Pages** of your repository to **Deploy from branch**:
-
-<p align="center">
-  <img src="https://github.com/step-security/pr-preview-action/blob/main/.github/deployment-settings.png" alt="GitHub Pages settings">
-</p>
-<p align="center">
-  Pictured: Repository Pages settings at /settings/page
-</p>
 
 > [!IMPORTANT]  
 > The other option (called "GitHub Actions") has a [misleading name](https://github.com/orgs/community/discussions/30113#discussioncomment-7650234) and does not work with this action.
@@ -73,7 +59,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Install and Build
               if: github.event.action != 'closed' # We don't need the build if we know the preview will be removed
@@ -98,7 +84,7 @@ The following input parameters are provided, which can be passed to the `with` p
 
 | Input&nbsp;parameter | Description |
 | --- | --- |
-| `source-dir` | When creating or updating a preview, the path to the directory that contains the files to deploy. E.g. if your project builds to `./dist/` you would put `./dist/` (or `dist`, etc.). <br> Equivalent to [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action) 'folder' setting. <br><br> Default: `.` (repository root) |
+| `source-dir` | When creating or updating a preview, the path to the directory that contains the files to deploy. E.g. if your project builds to `./dist/` you would put `./dist/` (or `dist`, etc.). <br> Equivalent to [step-security/github-pages-deploy-action](https://github.com/step-security/github-pages-deploy-action) 'folder' setting. <br><br> Default: `.` (repository root) |
 | `deploy-repository` | The repository to deploy the preview to. <br> **Note:** The `token` parameter must also be set if changing this from the default. <br><br> Default: The pull request's target repository. |
 | `preview-branch` | Branch to save previews to. This should be the same branch that your GitHub Pages site is deployed from. <br><br> Default: `gh-pages` |
 | `umbrella-dir` | Path to the directory to place previews in. <br> The umbrella directory is used to namespace previews from your main branch's deployment on GitHub Pages. <br><br> Default: `pr-preview` |
@@ -171,13 +157,13 @@ If you are using GitHub Actions to deploy your GitHub Pages sites (typically on 
 
     If your root directory on the GitHub Pages deployment branch (or `docs/` on the main branch) is generated automatically (e.g. on pushes to the main branch, with a tool such as Webpack), you will need to configure it not to remove the umbrella directory (`pr-preview/` by default, see configuration below).
 
-    For example, if you are using [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action) to deploy your build, you can implement this using its `clean-exclude` parameter:
+    For example, if you are using [step-security/github-pages-deploy-action](https://github.com/step-security/github-pages-deploy-action) to deploy your build, you can implement this using its `clean-exclude` parameter:
 
     ```yml
     # .github/workflows/build-deploy-pages-site.yml
     steps:
         ...
-        - uses: JamesIves/github-pages-deploy-action@v4
+        - uses: step-security/github-pages-deploy-action@v4
           ...
           with:
               clean-exclude: pr-preview/
@@ -190,13 +176,13 @@ If you are using GitHub Actions to deploy your GitHub Pages sites (typically on 
 
     Force-pushing your main deployment will cause it to overwrite any and all files in the deployment location. This will destroy any ongoing preview deployments. Instead, consider adjusting your deployment workflow to rebase or merge your main deployment onto the deployment branch to respect other ongoing deployments.
 
-    For example, if you are using [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action) to deploy your build, be aware that at the time of writing (v4.7.2) it force-pushes new deployments by default. You can disable this by setting its `force` parameter to `false`, which will prompt it to rebase new deployments instead of force-pushing them:
+    For example, if you are using [step-security/github-pages-deploy-action](https://github.com/step-security/github-pages-deploy-action) to deploy your build, be aware that at the time of writing (v4.7.2) it force-pushes new deployments by default. You can disable this by setting its `force` parameter to `false`, which will prompt it to rebase new deployments instead of force-pushing them:
 
     ```yml
     # .github/workflows/build-deploy-pages-site.yml
     steps:
         ...
-        - uses: JamesIves/github-pages-deploy-action@v4
+        - uses: step-security/github-pages-deploy-action@v4
             ...
             with:
                 force: false
@@ -236,7 +222,7 @@ jobs:
     deploy-preview:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - run: npm i && npm run build
               if: github.event.action != 'closed'
             - uses: step-security/pr-preview-action@v1
@@ -263,9 +249,9 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - run: npm i && npm run build
-            - uses: JamesIves/github-pages-deploy-action@v4
+            - uses: step-security/github-pages-deploy-action@v4
               with:
                   folder: .
                   branch: gh-pages
@@ -328,7 +314,7 @@ jobs:
     deploy-preview:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - run: npm i && npm run build
             - uses: step-security/pr-preview-action@v1
               with:
@@ -369,7 +355,7 @@ jobs:
     deploy-preview:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - run: npm i && npm run build
 
             - uses: step-security/pr-preview-action@v1
@@ -413,12 +399,3 @@ To use a different QR code provider (it's easy to make your own - consider forki
 ```
 
 If using a customised comment with `comment: false`, simply construct the image URL from your chosen provider's URL and the preview URL (`${{ steps.[JOB ID].outputs.preview-url }}`).
-
-# Acknowledgements
-
-Big thanks to the following:
-
--   [shlinkio/deploy-preview-action](https://github.com/shlinkio/deploy-preview-action) (MIT), prior art that informed the direction of this Action
--   [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action) (MIT), used by this Action to deploy previews
--   [marocchino/sticky-pull-request-comment](https://github.com/marocchino/sticky-pull-request-comment) (MIT), used by this Action to leave a sticky comment on pull requests
--   [Everyone who has contributed](https://github.com/step-security/pr-preview-action/graphs/contributors) to this Action

@@ -45,7 +45,7 @@ inputs:
         default: ""
     deploy-repository:
         description: >
-            The GitHub repository to deploy the preview to. This should be formatted like `<org name>/<repo name>`, e.g. `rossjrw/pr-preview-action`. Defaults to the current repository.
+            The GitHub repository to deploy the preview to. This should be formatted like `<org name>/<repo name>`, e.g. `step-security/pr-preview-action`. Defaults to the current repository.
             
             You will need to add a Personal Access Token (PAT) in the `token` input in order to allow the action running in one repository to make changes to another repository.
 
@@ -154,7 +154,7 @@ runs:
 
         - name: Deploy preview directory
           if: env.deployment_action == 'deploy'
-          uses: step-security/github-pages-deploy-action@release
+          uses: step-security/github-pages-deploy-action@main
           with:
               token: ${{ inputs.token }}
               repository-name: ${{ inputs.deploy-repository }}
@@ -225,7 +225,7 @@ runs:
 
         - name: Remove preview directory
           if: env.deployment_action == 'remove'
-          uses: step-security/github-pages-deploy-action@release
+          uses: step-security/github-pages-deploy-action@main
           with:
               token: ${{ inputs.token }}
               repository-name: ${{ inputs.deploy-repository }}

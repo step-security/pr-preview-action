@@ -6,9 +6,6 @@ on:
             - main
     pull_request:
         types: [opened, synchronize, reopened]
-    pull_request_target:
-        types: [opened, synchronize, reopened]
-    workflow_dispatch:
 
 permissions:
     contents: read
@@ -40,6 +37,9 @@ jobs:
     integration-tests:
         name: Integration tests
         needs: [test-unit]
+        permissions:
+            contents: write
+            pages: read
         # Run integration tests when:
         # 1. Push to main
         # 2. Same-repo PR (secrets available via pull_request)
@@ -53,5 +53,4 @@ jobs:
         with:
             ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.ref || github.ref }}
             sha: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
-        secrets:
-            test-deploy-token: ${{ secrets.TEST_DEPLOY_TOKEN }}
+        secrets: inherit
