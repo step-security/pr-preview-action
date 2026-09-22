@@ -103,10 +103,10 @@ The following input parameters are provided, which can be passed to the `with` p
 | `preview-branch` | Branch to save previews to. This should be the same branch that your GitHub Pages site is deployed from. <br><br> Default: `gh-pages` |
 | `umbrella-dir` | Path to the directory to place previews in. <br> The umbrella directory is used to namespace previews from your main branch's deployment on GitHub Pages. <br><br> Default: `pr-preview` |
 | `pr-number` | The PR number to use for the preview path. <br> Useful for testing or when the workflow is not triggered by a pull_request event. <br><br> Default: The PR number (`${{ github.event.number }}`) |
-| `pages-base-url` | Base URL to use when providing a link to the preview site. <br><br> Default: The pull request's target repository's default GitHub Pages URL (e.g. `rossjrw.github.io/pr-preview-action/`) |
+| `pages-base-url` | Base URL to use when providing a link to the preview site. <br><br> Default: The pull request's target repository's default GitHub Pages URL (e.g. `step-security.github.io/pr-preview-action/`) |
 | `pages-base-path` | Path that GitHub Pages is being served from, as configured in your repository settings, e.g. `docs/`. When generating the preview URL path, this is removed from the beginning of the file path. <br><br> Default: `.` (repository root) |
 | `wait-for-pages-deployment` <br> (boolean) | Whether to wait for the GitHub Pages deployment to complete. When enabled, the action will poll the GitHub Deployments API and delay workflow completion until the Pages deployment finishes, e.g. to ensure the preview URL is accessible when the comment is posted. <br><br> Default: `false` (this will be `true` in a future version of this Action) |
-| `comment` <br> (boolean) | Whether to leave a [sticky comment](https://github.com/marocchino/sticky-pull-request-comment) on the PR after the preview is built.<br> The comment may be added before the preview finishes deploying unless `wait-for-pages-deployment` is enabled. <br><br> Default: `true` |
+| `comment` <br> (boolean) | Whether to leave a [sticky comment](https://github.com/step-security/sticky-pull-request-comment) on the PR after the preview is built.<br> The comment may be added before the preview finishes deploying unless `wait-for-pages-deployment` is enabled. <br><br> Default: `true` |
 | `qr-code` <br> | Whether to include a QR code in the sticky comment for easy mobile access, which links to the preview URL. Only affects the default comment (i.e. if `comment` is not `false`). <br> Enabled by default - set to `false` to disable, or to a string to use a different provider ([see below](#use-a-different-qr-code-provider)). <br><br> Default: [`https://qr.rossjrw.com/?color.dark=0d1117&url=`](https://qr.rossjrw.com) |
 | `token` | Authentication token for the preview deployment. <br> The default value works for non-fork pull requests to the same repository. For anything else, you will need a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with permission to access it, and [store it as a secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) in your repository. E.g. you might name that secret 'PREVIEW_TOKEN' and use it with `token: ${{ secrets.PREVIEW_TOKEN }}`. <br><br> Default: `${{ github.token }}`, which gives the action permission to deploy to the current repository. |
 | `action` <br> (enum) | Determines what this action will do when it is executed. Supported values: <br><br> <ul><li>`deploy` - create and deploy the preview, overwriting any existing preview in that location.</li><li>`remove` - remove the preview.</li><li>`auto` - determine whether to deploy or remove the preview based on [the emitted event](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request). If the event is `pull_request`, it will deploy the preview when the event type is `opened`, `reopened` and `synchronize`, and remove it on `closed` events. Does not do anything for other events or event types, even if you explicitly instruct the workflow to run on them.</li><li>`none` and all other values: does not do anything.</li></ul> Default: `auto` |
@@ -379,7 +379,7 @@ jobs:
                   preview-branch: ${{ env.PREVIEW_BRANCH }}
                   comment: false
 
-            - uses: marocchino/sticky-pull-request-comment@v2
+            - uses: step-security/sticky-pull-request-comment@v3
               if: steps.preview-step.outputs.deployment-action == 'deploy' && env.deployment_status == 'success'
               with:
                   header: pr-preview
@@ -389,7 +389,7 @@ jobs:
                       | <p><img src="https://qr.rossjrw.com/?url=${{ steps.preview-step.outputs.preview-url }}" height="100" align="right" alt="QR code for preview link"></p> :rocket: View preview at <br> ${{ steps.preview-step.outputs.preview-url }} <br><br>
                       | <h6>Built to branch [`${{ env.PREVIEW_BRANCH }}`](${{ github.server_url }}/${{ github.repository }}/tree/${{ env.PREVIEW_BRANCH }}) at ${{ steps.preview-step.outputs.action-start-time }}. <br> Preview will be ready when the [GitHub Pages deployment](${{ github.server_url }}/${{ github.repository }}/deployments) is complete. <br><br> </h6>
 
-            - uses: marocchino/sticky-pull-request-comment@v2
+            - uses: step-security/sticky-pull-request-comment@v3
               if: steps.preview-step.outputs.deployment-action == 'remove' && env.deployment_status == 'success'
               with:
                   header: pr-preview
