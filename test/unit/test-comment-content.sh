@@ -5,7 +5,7 @@ set -e
 source "$(dirname "$0")/../lib/assert.sh"
 
 # Test configuration - values that generate-comment.sh needs
-action_repository="rossjrw/pr-preview-action"
+action_repository="step-security/pr-preview-action"
 action_version="v1.0.0-test"
 preview_url="https://test-owner.github.io/test-repo/pr-preview/pr-12345/"
 preview_branch="gh-pages"
