@@ -22,8 +22,13 @@ jobs:
             TEST_UMBRELLA_DIR: pr-preview-run-${{ github.run_id }}
             TEST_DEPLOY_REPO: ${{ github.repository }}
         steps:
+            - name: Harden the runner (Audit all outbound calls)
+              uses: step-security/harden-runner@v2
+              with:
+                egress-policy: audit
+
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                   ref: ${{ inputs.sha }}
 
@@ -123,8 +128,13 @@ jobs:
             CUSTOM_UMBRELLA_DIR: custom-previews-run-${{ github.run_id }}
             TEST_DEPLOY_REPO: ${{ github.repository }}
         steps:
+            - name: Harden the runner (Audit all outbound calls)
+              uses: step-security/harden-runner@v2
+              with:
+                egress-policy: audit
+
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                   ref: ${{ inputs.sha }}
 
@@ -171,8 +181,13 @@ jobs:
             TEST_UMBRELLA_DIR: pr-preview-run-${{ github.run_id }}
             TEST_DEPLOY_REPO: ${{ github.repository }}
         steps:
+            - name: Harden the runner (Audit all outbound calls)
+              uses: step-security/harden-runner@v2
+              with:
+                egress-policy: audit
+
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                   ref: ${{ inputs.sha }}
 
@@ -263,8 +278,13 @@ jobs:
             TEST_DEPLOY_REPO: ${{ github.repository }}
             TEST_DEPLOY_REPO_BRANCH: gh-pages
         steps:
+            - name: Harden the runner (Audit all outbound calls)
+              uses: step-security/harden-runner@v2
+              with:
+                egress-policy: audit
+
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                   ref: ${{ inputs.sha }}
 
