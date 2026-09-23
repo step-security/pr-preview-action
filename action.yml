@@ -199,7 +199,7 @@ runs:
 
         - name: Deploy preview directory
           if: env.deployment_action == 'deploy'
-          uses: step-security/github-pages-deploy-action@v4
+          uses: step-security/github-pages-deploy-action@fe9e6f669019bdc4519d0fe69013b428268eb30c #v 4.9.0
           with:
               token: ${{ inputs.token }}
               repository-name: ${{ inputs.deploy-repository }}
@@ -261,7 +261,7 @@ runs:
               (inputs.comment == 'true' || inputs.comment == true) &&
               (env.deployment_status == 'success' || env.deployment_status == 'skipped') &&
               steps.deploy-comment.outcome == 'success'
-          uses: step-security/sticky-pull-request-comment@v3
+          uses: step-security/sticky-pull-request-comment@3f74a8f2b4dc745810ded9bbfd887679bccd13c2 # v3.0.5
           with:
               header: pr-preview
               message: ${{ steps.deploy-comment.outputs.content }}
@@ -270,7 +270,7 @@ runs:
 
         - name: Remove preview directory
           if: env.deployment_action == 'remove'
-          uses: step-security/github-pages-deploy-action@v4
+          uses: step-security/github-pages-deploy-action@fe9e6f669019bdc4519d0fe69013b428268eb30c # v4.9.0
           with:
               token: ${{ inputs.token }}
               repository-name: ${{ inputs.deploy-repository }}
@@ -332,7 +332,7 @@ runs:
               (inputs.comment == 'true' || inputs.comment == true) &&
               (env.deployment_status == 'success' || env.deployment_status == 'skipped') &&
               steps.remove-comment.outcome == 'success'
-          uses: step-security/sticky-pull-request-comment@v3
+          uses: step-security/sticky-pull-request-comment@3f74a8f2b4dc745810ded9bbfd887679bccd13c2 # v3.0.5
           with:
               header: pr-preview
               message: ${{ steps.remove-comment.outputs.content }}
