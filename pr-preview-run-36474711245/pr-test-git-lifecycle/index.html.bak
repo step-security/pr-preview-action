@@ -3,6 +3,6 @@
     <body>
         <h1>test</h1>
         <p id="is-deployed">true</p>
-        <p id="testid">null</p>
+        <p id="testid">test-git-lifecycle-INITIALISED</p>
     </body>
 </html>
