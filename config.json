@@ -1,0 +1,12 @@
+{
+  "$comment": "Managed automatically when syncing with upstream. Do not edit by hand.",
+  "schema_version": 1,
+  "onboarding_type": "copied",
+  "action_type": "composite",
+  "upstream": {
+    "repository": "rossjrw/pr-preview-action",
+    "synced_tag": "v1.8.2",
+    "synced_commit": "873417d2df72380da1f3978378fb58560bcde976",
+    "archived": false
+  }
+}
